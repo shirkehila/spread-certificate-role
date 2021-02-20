@@ -11,18 +11,10 @@
   set_fact:
     ignore_existing_rsync_option: --ignore-existing
 
-- name: debug rsync options
-  debug:
-    var: rsync_options
-
 - name: update rsync options to not override existing files
   set_fact:
     rsync_options: "{{ ' '.join((rsync_options, ignore_existing_rsync_option)) }}"
   when: not override_existing_certificate
-
-- name: debug rsync options
-  debug:
-    var: rsync_options
 
 - name: set source certificate path
   set_fact:
