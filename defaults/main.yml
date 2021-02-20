@@ -1,7 +1,7 @@
 ---
 # defaults file for spread-certificate
 base_directory: /etc/elasticsearch
-es_node_base_name: notomput
+es_base_instance_name: notomput
 es_generator_instance_name: notomput1
 certificate_file_name: elastic-certificates.p12
 override_existing_certificate: false

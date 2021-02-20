@@ -2,7 +2,7 @@
   find:
     paths: "{{ base_directory }}"
     file_type: directory
-    patterns: "{{ es_node_base_name }}.+"
+    patterns: "{{ es_base_instance_name }}.+"
     use_regex: yes
   register: nodes_conf_dirs
 
