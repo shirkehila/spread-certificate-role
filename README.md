@@ -46,6 +46,7 @@ Inventory:
     [generator]
     elastic-server1
     [hosts]
+    elastic-server1
     elastic-server2
     elastic-server3
 
