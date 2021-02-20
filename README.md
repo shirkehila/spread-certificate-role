@@ -41,7 +41,7 @@ Playbook:
         override_existing_certificate: true
 
 Inventory:
-> :warning: **You must specify the generator group** containing one host which is the host that contains the node that generated the certicate.
+> :exclamation: **You must specify the generator group** containing one host which is the host that contains the node that generated the certificate.
 
     [generator]
     elastic-server1
