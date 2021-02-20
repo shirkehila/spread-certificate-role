@@ -2,7 +2,8 @@ spread-certificate
 ==================
 
 This role copies an elasticsearch certificate file across a multi instance cluster. It assumes the certificate is already generated and sits in the configuration directory of a given node in a given cluster.
-It assumes your node names in the cluster are in the form of <hostname>-<base_instance_name><instance_number>, for an example: elastic-main1, and the the instances config directories are named <base_instance_name><instance_number>, which implies in out example: main1.
+It assumes your node names in the cluster are in the form of `<hostname>-<base_instance_name><instance_number>`, for an example: `elastic-server1
+-main1`, and the the instances config directories are named `<base_instance_name><instance_number>`, which implies in out example: `main1`.
 The generator host should be described in the inventory file in the group `generator`, and the generator node should be described in the role variables.
 
 Requirements
@@ -44,11 +45,11 @@ Inventory:
 > :exclamation: **You must specify the generator group** containing one host which is the host that contains the node that generated the certificate.
 
     [generator]
-    elastic-server1
+    elasticserver1
     [hosts]
-    elastic-server1
-    elastic-server2
-    elastic-server3
+    elasticserver1
+    elasticserver2
+    elasticserver3
 
 License
 -------
