@@ -1,31 +1,53 @@
-Role Name
-=========
+spread-certificate
+==================
 
-A brief description of the role goes here.
+This role copies an elasticsearch certificate file across a multi instance cluster. It assumes the certificate is already generated and sits in the configuration directory of a given node in a given cluster.
+It assumes your node names in the cluster are in the form of <host>-<base_instance_name><instance_number>, for an example: elastic-main1, and the the instances config directories are named <base_instance_name><instance_number>, which implies in out example: main1.
+The generator host should be described in the inventory file in the group `generator`, and the generator node should be described in the role variables.
 
 Requirements
-------------
+----------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+A generated certificate file that sits in the configuration directory of a certain node.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+variable name | type | description | default value
+------------- | -------- | ------------------------ | -------------
+base_directory | string | the directory that contains all the instances config directories | /etc/elasticsearch
+es_base_instance_name | string | base instance name as decribed in the role general description | main
+es_generator_instance_name | string | name of the elastic instance that generated the certificate, not including server name and hyphen | main1
+certificate_file_name | string | name of the certificate file, including file extention | elastic-certificates.p12
+override_existing_certificate | boolean | if you set this to true, existing certificate files in the instances config directories will be overriden | false
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+No dependency, although the role uses rsync, but there's a task that install it.
 
-Example Playbook
-----------------
+Example Playbook and Inventory
+------------------------------
+Playbook:
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - name: spread certificate
+      hosts: hosts
       roles:
-         - { role: username.rolename, x: 42 }
+        - role: spread-certificate
+      vars:
+        es_base_instance_name: instance
+        es_generator_instance_name: instance2
+        override_existing_certificate: true
+
+Inventory:
+> :warning: **You must specify the generator group** containing one host which is the host that contains the node that generated the certicate.
+
+    [generator]
+    elastic-server1
+    [hosts]
+    elastic-server2
+    elastic-server3
 
 License
 -------
@@ -35,4 +57,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Just a frustrated user who didn't want to do this manually.
