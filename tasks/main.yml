@@ -1,0 +1,7 @@
+---
+# tasks file for spread-certificate
+- name: include get nodes conf dir paths
+  include: get_nodes_conf_dir_paths.yml
+
+- name: copy certificate to nodes conf dir paths
+  include: copy_certificate_to_paths.yml

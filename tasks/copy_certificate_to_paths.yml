@@ -1,0 +1,34 @@
+- name: yum install rsync
+  yum:
+    name: rsync
+    state: present
+
+- name: set rsync options
+  set_fact:
+    rsync_options: -a
+
+- name: set not override rsync option
+  set_fact:
+    ignore_existing_rsync_option: --ignore-existing
+
+- name: debug rsync options
+  debug:
+    var: rsync_options
+
+- name: update rsync options to not override existing files
+  set_fact:
+    rsync_options: "{{ ' '.join((rsync_options, ignore_existing_rsync_option)) }}"
+  when: not override_existing_certificate
+
+- name: debug rsync options
+  debug:
+    var: rsync_options
+
+- name: set source certificate path
+  set_fact:
+    source_certificate_path: "{{generator_node_path}}/{{certificate_file_name}}"
+
+- name: copy certificate to nodes conf dir paths
+  shell: "rsync {{rsync_options}} {{source_certificate_path}} {{item}}/{{certificate_file_name}}"
+  delegate_to: "{{groups['generator'] | first}}"
+  with_items: "{{nodes_conf_dirs_paths}}"

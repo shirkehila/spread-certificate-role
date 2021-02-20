@@ -1,0 +1,24 @@
+- name: set nodes directories non generator host
+  find:
+    paths: "{{ base_directory }}"
+    file_type: directory
+    patterns: "{{ es_node_base_name }}.+"
+    use_regex: yes
+  register: nodes_conf_dirs
+
+- name: set destination paths
+  set_fact:
+    nodes_conf_dirs_paths: "{{ nodes_conf_dirs.files | map(attribute='path') | list}}"
+
+- name: set generator node path
+  set_fact:
+    generator_node_path: "{{base_directory}}/{{es_generator_instance_name}}"
+
+- name: remove generator node path from destinatin paths
+  set_fact:
+    nodes_conf_dirs_paths: "{{ nodes_conf_dirs_paths | difference([generator_node_path]) }}"
+  when: inventory_hostname in groups['generator']
+
+- name: debug destination directories
+  debug:
+    var: nodes_conf_dirs_paths
